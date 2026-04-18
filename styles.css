@@ -1,0 +1,20 @@
+/* ✅ CLEAN BLUR SYSTEM (REMOVE OVERLAY SYSTEM COMPLETELY) */
+
+.fg-blur {
+  filter: blur(12px) brightness(0.6) !important;
+  opacity: 0.7;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+/* 🚫 NEVER BLUR NAVBAR */
+ytd-masthead,
+#masthead {
+  filter: none !important;
+}
+
+/* 🚫 STOP hover preview */
+.fg-blur ytd-moving-thumbnail-renderer,
+.fg-blur #mouseover-overlay {
+  display: none !important;
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta class="r1" charset="UTF-8">
+  <title class="r2" >Focus Layer</title>
+  <link class="r3" rel="stylesheet" href="styles.css">
+</head>
+<body class="pop-up-fl">
+
+  <div class="con-box">
+    <h1 class="head-foc">⚡ Focus Layer</h1>
+
+    <!-- TOGGLE -->
+    <div class="sec-swi">
+      <label class="switch">
+        <input type="checkbox" id="focusToggle">
+        <span class="slider"></span>
+      </label>
+      <span class="label">Focus Mode</span>
+    </div>
+
+    <!-- INTENT INPUT -->
+    <div class="sec-swi">
+      <label>🎯 Your Intent</label>
+      <input type="text" id="intentInput" placeholder="e.g. study coding AI">
+    </div>
+
+    <!-- MODE -->
+    <div class="sec-swi">
+      <label>⚙️ Mode</label>
+      <select id="modeSelect">
+        <option value="normal">Normal</option>
+        <option value="timer">Timer</option>
+      </select>
+    </div>
+
+    <!-- TIMER -->
+    <div class="sec-swi" id="timerContainer">
+      <label>⏱ Duration (minutes)</label>
+      <input type="number" id="timerInput" min="1" placeholder="25">
+    </div>
+
+    <!-- FILTER LEVEL -->
+    <div class="sec-swi">
+      <label>🧠 Filter Level</label>
+      <select id="levelSelect">
+        <option value="basic">Basic</option>
+        <option value="advanced">AI</option>
+      </select>
+    </div>
+
+    <!-- BUTTON -->
+    <button class="but-on" id="startBtn">Start Focus</button>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

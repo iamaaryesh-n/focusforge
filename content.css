@@ -1,0 +1,17 @@
+/* Blur effect */
+.fg-blur {
+  filter: blur(6px) brightness(0.7);
+  transition: filter 0.2s ease;
+  pointer-events: none;
+}
+
+/* Remove blur on hover (optional — you can delete this if you want strict mode) */
+.fg-blur:hover {
+  filter: blur(4px);
+}
+
+/* Prevent hover video autoplay overlays */
+ytd-thumbnail-overlay-hover-text-renderer,
+ytd-thumbnail-overlay-time-status-renderer {
+  pointer-events: none !important;
+}
