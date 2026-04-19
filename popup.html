@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
   <div class="popup-shell">
 
     <!-- HEADER -->
@@ -21,8 +20,9 @@
     <!-- INTENT INPUT -->
     <div class="card">
       <label class="field-label" for="intentInput">🎯 Your Focus Intent</label>
-      <input type="text" id="intentInput" class="text-input" placeholder="e.g. learn python" autocomplete="off"
-        spellcheck="false">
+      <input type="text" id="intentInput" class="text-input" placeholder='e.g. python  or  "data science"'
+        autocomplete="off" spellcheck="false">
+      <p class="hint-text">Tip: wrap in "quotes" for strict match only</p>
     </div>
 
     <!-- MODE SELECT -->
@@ -40,15 +40,33 @@
       <input type="number" id="timerInput" class="text-input" min="1" max="480" placeholder="25">
     </div>
 
+    <!-- PREFERENCES -->
+    <div class="card">
+      <label class="field-label">🎛 Blur Preferences</label>
+      <div class="pref-list">
+
+        <label class="pref-row">
+          <div class="pref-info">
+            <span class="pref-name">Comments section</span>
+            <span class="pref-desc">Blur YouTube comments</span>
+          </div>
+          <div class="mini-toggle">
+            <input type="checkbox" id="prefComments">
+            <span class="mini-track"><span class="mini-thumb"></span></span>
+          </div>
+        </label>
+
+
+      </div>
+    </div>
+
     <!-- ACTION BUTTONS -->
     <div class="btn-row">
       <button class="start-btn" id="startBtn">
-        <span class="btn-icon">▶</span>
-        Start
+        <span class="btn-icon">▶</span> Start
       </button>
       <button class="stop-btn" id="stopBtn">
-        <span class="btn-icon">✕</span>
-        Stop
+        <span class="btn-icon">✕</span> Stop
       </button>
     </div>
 
@@ -59,7 +77,6 @@
     </div>
 
   </div>
-
   <script src="popup.js"></script>
 </body>
 
