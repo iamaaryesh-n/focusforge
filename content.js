@@ -2,6 +2,7 @@ let observer = null;
 let paused = false;
 let timerInterval;
 let isRunning = false;
+let sessionConfig = null;
 
 // ─────────────────────────────────────────────────────────────────────
 // AUTO-RESUME on page load if session was active
@@ -26,8 +27,9 @@ chrome.runtime.onMessage.addListener((message) => {
   }
   if (message.action === "stopFocus") { stopExtension(); }
   if (message.action === "updatePrefs" && isRunning) {
+    if (sessionConfig) sessionConfig.prefs = message.prefs || {};
     // Prefs are embedded in the message — apply instantly, no storage read needed
-    applyBlurPreferences({ prefs: message.prefs || {} });
+    applyBlurPreferences(sessionConfig || { prefs: message.prefs || {} });
   }
 });
 
@@ -39,6 +41,8 @@ chrome.runtime.onMessage.addListener((message) => {
 function initExtension(config) {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   if (observer) { observer.disconnect(); observer = null; }
+  
+  sessionConfig = config;
 
   const raw = (config.intent || "").trim();
   const strictMatch = raw.match(/^"(.+)"$/);
