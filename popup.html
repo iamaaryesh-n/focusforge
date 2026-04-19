@@ -1,59 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta class="r1" charset="UTF-8">
-  <title class="r2" >Focus Layer</title>
-  <link class="r3" rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus Layer</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="pop-up-fl">
 
-  <div class="con-box">
-    <h1 class="head-foc">⚡ Focus Layer</h1>
+<body>
 
-    <!-- TOGGLE -->
-    <div class="sec-swi">
-      <label class="switch">
-        <input type="checkbox" id="focusToggle">
-        <span class="slider"></span>
-      </label>
-      <span class="label">Focus Mode</span>
+  <div class="popup-shell">
+
+    <!-- HEADER -->
+    <div class="popup-header">
+      <h1 class="brand-title">⚡ Focus Layer</h1>
+      <p class="brand-sub">Stay in your zone</p>
     </div>
 
     <!-- INTENT INPUT -->
-    <div class="sec-swi">
-      <label>🎯 Your Intent</label>
-      <input type="text" id="intentInput" placeholder="e.g. study coding AI">
+    <div class="card">
+      <label class="field-label" for="intentInput">🎯 Your Focus Intent</label>
+      <input type="text" id="intentInput" class="text-input" placeholder="e.g. learn python" autocomplete="off"
+        spellcheck="false">
     </div>
 
-    <!-- MODE -->
-    <div class="sec-swi">
-      <label>⚙️ Mode</label>
-      <select id="modeSelect">
-        <option value="normal">Normal</option>
-        <option value="timer">Timer</option>
+    <!-- MODE SELECT -->
+    <div class="card">
+      <label class="field-label" for="modeSelect">⚙️ Session Mode</label>
+      <select id="modeSelect" class="styled-select">
+        <option value="normal">Normal (no time limit)</option>
+        <option value="timer">Timer (set duration)</option>
       </select>
     </div>
 
-    <!-- TIMER -->
-    <div class="sec-swi" id="timerContainer">
-      <label>⏱ Duration (minutes)</label>
-      <input type="number" id="timerInput" min="1" placeholder="25">
+    <!-- TIMER INPUT (hidden by default) -->
+    <div class="card timer-card" id="timerContainer">
+      <label class="field-label" for="timerInput">⏱ Duration (minutes)</label>
+      <input type="number" id="timerInput" class="text-input" min="1" max="480" placeholder="25">
     </div>
 
-    <!-- FILTER LEVEL -->
-    <div class="sec-swi">
-      <label>🧠 Filter Level</label>
-      <select id="levelSelect">
-        <option value="basic">Basic</option>
-        <option value="advanced">AI</option>
-      </select>
+    <!-- ACTION BUTTONS -->
+    <div class="btn-row">
+      <button class="start-btn" id="startBtn">
+        <span class="btn-icon">▶</span>
+        Start
+      </button>
+      <button class="stop-btn" id="stopBtn">
+        <span class="btn-icon">✕</span>
+        Stop
+      </button>
     </div>
 
-    <!-- BUTTON -->
-    <button class="but-on" id="startBtn">Start Focus</button>
+    <!-- STATUS BAR -->
+    <div class="status-bar" id="statusBar">
+      <span class="status-dot inactive" id="statusDot"></span>
+      <span class="status-text" id="statusText">⚫ Inactive</span>
+    </div>
 
   </div>
 
   <script src="popup.js"></script>
 </body>
+
 </html>

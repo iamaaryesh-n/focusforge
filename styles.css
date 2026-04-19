@@ -1,20 +1,360 @@
-/* ✅ CLEAN BLUR SYSTEM (REMOVE OVERLAY SYSTEM COMPLETELY) */
+/* ================================================================
+   SECTION A — CONTENT SCRIPT STYLES (injected into YouTube)
+   These classes are applied by content.js to YouTube elements.
+   ================================================================ */
 
+/* ─── Blur effect ───────────────────────────────────────────── */
 .fg-blur {
-  filter: blur(12px) brightness(0.6) !important;
-  opacity: 0.7;
-  pointer-events: none;
-  transition: 0.2s ease;
+  filter: blur(10px) brightness(0.5) !important;
+  opacity: 0.6 !important;
+  pointer-events: none !important;
+  transition: filter 0.25s ease, opacity 0.25s ease !important;
+  user-select: none !important;
 }
 
-/* 🚫 NEVER BLUR NAVBAR */
+/* ─── Never blur the navbar ─────────────────────────────────── */
 ytd-masthead,
 #masthead {
   filter: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
-/* 🚫 STOP hover preview */
+/* ─── Stop hover video previews on blurred elements ─────────── */
 .fg-blur ytd-moving-thumbnail-renderer,
 .fg-blur #mouseover-overlay {
   display: none !important;
+}
+
+/* ─── Floating control panel injected by content.js ─────────── */
+.fg-control-panel {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: rgba(15, 15, 15, 0.92) !important;
+  border: 1px solid rgba(62, 166, 255, 0.3) !important;
+  border-radius: 12px !important;
+  padding: 8px 14px !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(62, 166, 255, 0.1) !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+  font-size: 13px !important;
+  color: #e8e8e8 !important;
+}
+
+.fg-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 7px !important;
+  color: #e8e8e8 !important;
+  cursor: pointer !important;
+  font-size: 13px !important;
+  padding: 5px 10px !important;
+  transition: background 0.15s ease !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+}
+
+.fg-btn:hover {
+  background: rgba(62, 166, 255, 0.2) !important;
+  border-color: rgba(62, 166, 255, 0.4) !important;
+}
+
+
+/* ================================================================
+   SECTION B — POPUP STYLES (only active inside popup.html)
+   The body selector here ONLY applies inside the popup iframe,
+   NOT on YouTube, because content scripts inject CSS globally
+   but popup.html loads styles.css in its own isolated document.
+   ================================================================ */
+
+/* ─── Reset & Base ──────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 340px;
+  min-height: 100px;
+  background: #0f0f0f;
+  color: #e8e8e8;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Shell ──────────────────────────────────────────────────── */
+.popup-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 0 4px;
+}
+
+/* ─── Header ─────────────────────────────────────────────────── */
+.popup-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid #1f1f1f;
+}
+
+.brand-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  background: linear-gradient(90deg, #3ea6ff 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 3px;
+  letter-spacing: 0.3px;
+}
+
+/* ─── Cards ──────────────────────────────────────────────────── */
+.card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0 10px;
+  transition: border-color 0.2s ease;
+}
+
+.card:focus-within {
+  border-color: #3ea6ff55;
+}
+
+/* ─── Field Labels ───────────────────────────────────────────── */
+.field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+}
+
+/* ─── Text / Number Inputs ───────────────────────────────────── */
+.text-input {
+  width: 100%;
+  background: #111111;
+  border: 1.5px solid #2d2d2d;
+  border-radius: 7px;
+  color: #e8e8e8;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 8px 11px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.text-input::placeholder {
+  color: #4b5563;
+}
+
+.text-input:focus {
+  border-color: #3ea6ff;
+  box-shadow: 0 0 0 3px rgba(62, 166, 255, 0.12);
+}
+
+/* ─── Styled Select ──────────────────────────────────────────── */
+.styled-select {
+  width: 100%;
+  background: #111111;
+  border: 1.5px solid #2d2d2d;
+  border-radius: 7px;
+  color: #e8e8e8;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 8px 11px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  padding-right: 30px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.styled-select:focus {
+  border-color: #3ea6ff;
+  box-shadow: 0 0 0 3px rgba(62, 166, 255, 0.12);
+}
+
+.styled-select option {
+  background: #1a1a1a;
+  color: #e8e8e8;
+}
+
+/* ─── Timer Card (hidden by default) ────────────────────────── */
+.timer-card {
+  display: none;
+  overflow: hidden;
+  animation: slideDown 0.2s ease forwards;
+}
+
+.timer-card.visible {
+  display: block;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Button Row (Start + Stop side by side) ─────────────────── */
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin: 4px 10px 0;
+}
+
+.start-btn,
+.stop-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: 1;
+  padding: 11px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.start-btn {
+  background: linear-gradient(135deg, #3ea6ff 0%, #2563eb 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(62, 166, 255, 0.25);
+}
+
+.start-btn:not(:disabled):hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(62, 166, 255, 0.35);
+}
+
+.start-btn:not(:disabled):active {
+  transform: translateY(0);
+  opacity: 0.85;
+}
+
+.stop-btn {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+  border: 1.5px solid rgba(248, 113, 113, 0.3);
+  box-shadow: none;
+}
+
+.stop-btn:not(:disabled):hover {
+  background: rgba(248, 113, 113, 0.22);
+  border-color: rgba(248, 113, 113, 0.5);
+  transform: translateY(-1px);
+}
+
+.stop-btn:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  font-size: 12px;
+}
+
+/* ─── Status Bar ─────────────────────────────────────────────── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 14px 10px;
+  margin: 2px 10px 0;
+  background: #111111;
+  border: 1px solid #1f1f1f;
+  border-radius: 8px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.status-dot.inactive {
+  background: #374151;
+}
+
+.status-dot.active {
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.08);
+  }
+}
+
+.status-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.2px;
+  transition: color 0.3s ease;
+}
+
+.status-text.active {
+  color: #22c55e;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2d2d2d;
+  border-radius: 2px;
 }
